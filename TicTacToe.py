@@ -29,15 +29,28 @@ def play_game():
         check_if_game_over()
         flip_player()
 
-if winner == "X" or winner =="O":
-    print(winner+"won.")
-elif winner == None:
-    print("Game was a tie.")
+    if winner == "X" or winner =="O":
+        print(winner+" won.")
+    elif winner == None:
+        print("Game was a tie.")
 
 def handle_turn(player):
+    print(player + "'s turn.")
     position = input("Choose a position from 1-9: ")
-    position = int(position) - 1
-    board[position] = "X"
+
+    valid = False
+    while not valid:
+      while position not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
+        position = input("Invalid input. Choose a position from 1-9: ")
+    
+      position = int(position) - 1
+
+      if board[position] == "-":
+          valid = True
+      else:    
+          print("Wrong position chosen. Try again.")
+
+    board[position] = player
     display_board()
 
 def check_if_game_over():
@@ -51,11 +64,11 @@ def check_if_win():
     column_winner = check_columns()
     diagonal_winner = check_diagonals()
     if row_winner:
-        winner = row_winner()
+        winner = row_winner
     elif column_winner:
-        winner = column_winner()
+        winner = column_winner
     elif diagonal_winner:
-        winner = diagonal_winner()
+        winner = diagonal_winner
     else:    
         winner = None
     return 
@@ -93,7 +106,7 @@ def check_columns():
 def check_diagonals():
     global game_still_going
     diagonal_1 = board[0] == board[4] == board[8] !="-"
-    diagonal_2 = board[21] == board[4] == board[6] !="-"
+    diagonal_2 = board[2] == board[4] == board[6] !="-"
     if diagonal_1 or diagonal_2:
         game_still_going = False
     if diagonal_1:
@@ -103,9 +116,17 @@ def check_diagonals():
     return 
 
 def check_if_tie():
+    global game_still_going
+    if "-" not in board:
+        game_still_going = False
     return 
 
 def flip_player():
+    global current_player
+    if current_player == "X":
+        current_player = "0"
+    elif current_player == "0":
+        current_player = "X"    
     return
 
 
